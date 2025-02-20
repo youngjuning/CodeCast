@@ -84,6 +84,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'com.codecast'
+        ]
     }
     signingConfigs {
         debug {
@@ -95,6 +98,7 @@ android {
     }
     buildTypes {
         debug {
+            debuggable true
             signingConfig signingConfigs.debug
         }
         release {

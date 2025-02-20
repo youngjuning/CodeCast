@@ -4,7 +4,7 @@ import React_RCTAppDelegate
 import ReactAppDependencyProvider
 
 @main
-class AppDelegate: RCTAppDelegate {
+class AppDelegate: RCTAppDelegate, RNAppAuthAuthorizationFlowManager {
   override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     self.moduleName = "CodeCast"
     self.dependencyProvider = RCTAppDependencyProvider()
@@ -15,7 +15,17 @@ class AppDelegate: RCTAppDelegate {
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-
+  
+  public weak var authorizationFlowManagerDelegate: RNAppAuthAuthorizationFlowManagerDelegate?
+    override func application(
+      _ app: UIApplication,
+      open url: URL,
+      options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+    ) -> Bool {
+//      return RCTLinkingManager.application(app, open: url, options: options)
+      return authorizationFlowManagerDelegate?.resumeExternalUserAgentFlow(with: url) ?? false
+  }
+  
   override func sourceURL(for bridge: RCTBridge) -> URL? {
     self.bundleURL()
   }
